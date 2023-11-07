@@ -20,5 +20,5 @@ label {
 }
 
 .btn-primary {
-    @apply bg-blue-900 text-white w-6
+    @apply bg-blue-900 text-white w-16 py-1 rounded-lg font-medium
 }
