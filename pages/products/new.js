@@ -1,16 +1,24 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
+import { redirect } from "next/dist/server/api-utils";
 import { useState } from "react";
 
 export default function NewProduct() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [goToProducts, setGoToProducts] = useState(false);
   async function createProduct(e) {
     e.preventDefault();
     const data = {title, description, price}
     await axios.post('/api/products', data)
+    setGoToProduct(true)
   };
+
+  if(goToProducts){
+    return redirect('/api/products')
+  }
+
   return (
     <Layout>
       <form onSubmit={createProduct}>
