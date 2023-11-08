@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
-import { redirect } from "next/dist/server/api-utils";
+import { Router, useRouter } from "next/router";
 import { useState } from "react";
 
 export default function NewProduct() {
@@ -8,15 +8,16 @@ export default function NewProduct() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [goToProducts, setGoToProducts] = useState(false);
+  const router = useRouter();
   async function createProduct(e) {
     e.preventDefault();
     const data = {title, description, price}
     await axios.post('/api/products', data)
-    setGoToProduct(true)
+    setGoToProducts(true)
   };
 
   if(goToProducts){
-    return redirect('/api/products')
+    router.push('/products')
   }
 
   return (
