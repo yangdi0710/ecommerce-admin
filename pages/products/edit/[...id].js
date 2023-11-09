@@ -1,6 +1,5 @@
 import Layout from "@/components/Layout";
 import ProductForm from "@/components/ProductForm";
-import { Product } from "@/models/Product";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -19,7 +18,12 @@ export default function EditProductPage({ title, description, price }) {
   });
   return (
     <Layout>
-      <ProductForm {...productInfo} />
+      <h1>Edit Product</h1>
+      {
+        productInfo && (
+          <ProductForm {...productInfo}/>
+        )
+      }
     </Layout>
   );
 }
