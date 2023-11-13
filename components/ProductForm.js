@@ -31,6 +31,10 @@ export default function ProductForm({
     router.push("/products", data);
   }
 
+  function uploadImages(e){
+    const files = e.target.files
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <div className="flex flex-col">
@@ -60,7 +64,7 @@ export default function ProductForm({
               />
             </svg>
             <div>Upload</div>
-            <input type="file" className="hidden"/>
+            <input type="file" className="hidden" onChange={uploadImages}/>
           </label>
           {!images?.length && <div>No photos in this product!</div>}
         </div>
