@@ -31,8 +31,19 @@ export default function ProductForm({
     router.push("/products", data);
   }
 
-  function uploadImages(e){
-    const files = e.target.files
+  async function uploadImages(e){
+    const files = e.target?.files
+    if(files?.length > 0) {
+      const data = new FormData();
+      for (const file of files) {
+        data.append('file', file)
+      }
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: data
+      })
+      console.log(res);
+    }
   }
 
   return (
