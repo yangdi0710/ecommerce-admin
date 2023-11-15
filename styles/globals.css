@@ -2,6 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+img {
+  max-height: 100%
+}
+
 input,
 textarea {
   @apply border-2 border-gray-400 rounded-md px-2 w-1/2;
