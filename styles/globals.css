@@ -18,7 +18,7 @@ textarea:focus {
 }
 
 h1 {
-  @apply text-2xl text-blue-900 mb-10 font-bold;
+  @apply text-2xl text-blue-900 mt-2 mb-8 font-bold;
 }
 
 label {
