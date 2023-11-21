@@ -4,18 +4,19 @@ import axios from "axios";
 
 export default function Categories() {
   const [name, setName] = useState();
+  const [parentCategory, setParentCategory] = useState("");
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetchCategories()
+    fetchCategories();
   }, []);
-  function fetchCategories(){
+  function fetchCategories() {
     axios.get("/api/categories").then((result) => setCategories(result.data));
   }
   async function saveCategory(e) {
     e.preventDefault();
-    await axios.post("/api/categories", { name });
+    await axios.post("/api/categories", { name, parentCategory });
     setName("");
-    fetchCategories()
+    fetchCategories();
   }
   return (
     <Layout>
@@ -29,6 +30,19 @@ export default function Categories() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        <select
+          className="mb-0"
+          onChange={(e) => setParentCategory(e.target.value)}
+          value={parentCategory}
+        >
+          <option value="">No parent category</option>
+          {categories.length > 0 &&
+            categories.map((category, index) => (
+              <option value={category._id} key={index}>
+                {category.name}
+              </option>
+            ))}
+        </select>
         <button className="btn-primary" type="submit">
           ADD
         </button>
@@ -37,14 +51,17 @@ export default function Categories() {
         <thead>
           <tr>
             <td>Category Name</td>
+            <td>Parent Category</td>
           </tr>
         </thead>
         <tbody>
-          {categories.length > 0 && categories.map((category, index) => (
-            <tr key={index}>
-              <td>{category.name}</td>
-            </tr>
-          ))}
+          {categories.length > 0 &&
+            categories.map((category, index) => (
+              <tr key={index}>
+                <td>{category.name}</td>
+                <td>{category?.parent?.name}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </Layout>

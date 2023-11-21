@@ -3,17 +3,19 @@
 @import "tailwindcss/utilities";
 
 img {
-  max-height: 100%
+  max-height: 100%;
 }
 
 input,
-textarea {
+textarea,
+select {
   @apply border-2 border-gray-400 rounded-md px-2 w-1/2;
   @apply mb-2;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   @apply border-blue-400 outline-none;
 }
 
@@ -53,6 +55,7 @@ table.basic a {
   @apply bg-gray-300;
 }
 
-.btn-default, .btn-red {
+.btn-default,
+.btn-red {
   @apply rounded-md px-3 text-xl rounded-md py-1 px-4 text-xl;
 }
