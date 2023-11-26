@@ -11,7 +11,7 @@ export default async function handle(req, res) {
     const { name, parentCategory } = req.body;
     const categoryDoc = await Category.create({
       name,
-      parent: parentCategory,
+      parent: parentCategory || null,
     });
     res.json(categoryDoc);
   }
@@ -25,5 +25,10 @@ export default async function handle(req, res) {
       }
     );
     res.json(categoryDoc);
+  }
+  if(method === "DELETE") {
+    const { _id } = req.query
+    await Category.deleteOne({ _id })
+    res.json('OK')
   }
 }
