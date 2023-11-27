@@ -21,7 +21,7 @@ export default async function handle(req, res) {
       { _id },
       {
         name,
-        parent: parentCategory,
+        parent: parentCategory || null,
       }
     );
     res.json(categoryDoc);

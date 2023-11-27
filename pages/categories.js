@@ -53,7 +53,7 @@ function Categories({ swal }) {
         if (result.isConfirmed) {
           const { _id } = category;
           await axios.delete(`/api/categories?_id=${_id}`);
-          fetchCategories()
+          fetchCategories();
         }
       })
       .catch((error) => {
@@ -68,27 +68,31 @@ function Categories({ swal }) {
           ? `Edit category ${editedCategory.name}`
           : "Create new category"}
       </label>
-      <form onSubmit={saveCategory} className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Category name"
-          className="mb-0"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <select
-          className="mb-0"
-          onChange={(e) => setParentCategory(e.target.value)}
-          value={parentCategory}
-        >
-          <option value="">No parent category</option>
-          {categories.length > 0 &&
-            categories.map((category, index) => (
-              <option value={category._id} key={index}>
-                {category.name}
-              </option>
-            ))}
-        </select>
+      <form onSubmit={saveCategory}>
+        <div className="flex gap-1">
+          <input
+            type="text"
+            placeholder="Category name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <select
+            onChange={(e) => setParentCategory(e.target.value)}
+            value={parentCategory}
+          >
+            <option value="">No parent category</option>
+            {categories.length > 0 &&
+              categories.map((category, index) => (
+                <option value={category._id} key={index}>
+                  {category.name}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div>
+          <label className="block">Properties</label>
+          <button className="btn-default !text-sm">Add new property</button>
+        </div>
         <button className="btn-primary" type="submit">
           Save
         </button>
