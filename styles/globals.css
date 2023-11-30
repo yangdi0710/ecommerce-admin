@@ -57,5 +57,5 @@ table.basic a {
 
 .btn-default,
 .btn-red {
-  @apply rounded-md px-3 text-xl rounded-md py-1 px-4 text-xl;
+  @apply rounded-md py-1 px-4 text-xl;
 }

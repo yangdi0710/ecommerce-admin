@@ -8,6 +8,7 @@ function Categories({ swal }) {
   const [name, setName] = useState();
   const [parentCategory, setParentCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const [properties, setProperties] = useState([]);
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -60,6 +61,32 @@ function Categories({ swal }) {
         // when promise rejected...
       });
   }
+  function addProperty() {
+    setProperties((prev) => {
+      return [...prev, { name: "", values: "" }];
+    });
+  }
+  function handlePropertyNameChange(index, property, newName) {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].name = newName;
+      return properties;
+    });
+  }
+  function handlePropertyValuesChange(index, property, newValues) {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].values = newValues;
+      return properties;
+    });
+  }
+  function removeProperty(indexToDelete) {
+    setProperties((prev) => {
+      return [...prev].filter((p, pIndex) => {
+        return pIndex !== indexToDelete;
+      });
+    });
+  }
   return (
     <Layout>
       <h1>Categories</h1>
@@ -89,46 +116,97 @@ function Categories({ swal }) {
               ))}
           </select>
         </div>
-        <div>
+        <div className="mb-4">
           <label className="block">Properties</label>
-          <button className="btn-default !text-sm">Add new property</button>
-        </div>
-        <button className="btn-primary" type="submit">
-          Save
-        </button>
-      </form>
-      <table className="basic">
-        <thead>
-          <tr>
-            <td>Category Name</td>
-            <td>Parent Category</td>
-            <td></td>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.length > 0 &&
-            categories.map((category, index) => (
-              <tr key={index}>
-                <td>{category.name}</td>
-                <td>{category?.parent?.name}</td>
-                <td className="">
-                  <button
-                    className="btn-primary mr-2 my-1"
-                    onClick={() => editCategory(category)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => deleteCategory(category)}
-                    className="btn-primary"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+          <button
+            type="button"
+            onClick={addProperty}
+            className="btn-default !text-sm mb-2"
+          >
+            Add new property
+          </button>
+          {properties.length > 0 &&
+            properties.map((property, index) => (
+              <div key={index} className="flex gap-1">
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    handlePropertyNameChange(index, property, e.target.value)
+                  }
+                  value={properties.name}
+                  placeholder="Property Name"
+                />
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    handlePropertyValuesChange(index, property, e.target.value)
+                  }
+                  value={properties.values}
+                  placeholder="Values"
+                />
+                <button
+                  type="button"
+                  className="btn btn-default !text-sm !py-0 !mb-2"
+                  onClick={() => removeProperty(index)}
+                >
+                  Remove
+                </button>
+              </div>
             ))}
-        </tbody>
-      </table>
+        </div>
+        <div className="flex gap-1">
+          {editedCategory && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditedCategory(null);
+                setName("");
+                setParentCategory("");
+              }}
+              className="btn-default !py-1 !text-base"
+            >
+              Cancel
+            </button>
+          )}
+          <button className="btn-primary" type="submit">
+            Save
+          </button>
+        </div>
+      </form>
+      {!editedCategory && (
+        <table className="basic">
+          <thead>
+            <tr>
+              <td>Category Name</td>
+              <td>Parent Category</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length > 0 &&
+              categories.map((category, index) => (
+                <tr key={index}>
+                  <td>{category.name}</td>
+                  <td>{category?.parent?.name}</td>
+                  <td className="">
+                    <button
+                      className="btn-primary mr-2 my-1"
+                      onClick={() => editCategory(category)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteCategory(category)}
+                      className="btn-primary"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </Layout>
   );
 }
