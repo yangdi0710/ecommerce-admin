@@ -17,7 +17,14 @@ function Categories({ swal }) {
   }
   async function saveCategory(e) {
     e.preventDefault();
-    const data = { name, parentCategory };
+    const data = {
+      name,
+      parentCategory,
+      properties: properties.map((p) => ({
+        name: p.name,
+        values: p.values.split(','),
+      })),
+    };
     if (editedCategory) {
       data._id = editedCategory._id;
       await axios.put("/api/categories", data);
