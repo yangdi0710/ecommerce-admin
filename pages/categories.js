@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { withSwal } from "react-sweetalert2";
+import { set } from "mongoose";
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -33,12 +34,18 @@ function Categories({ swal }) {
       await axios.post("/api/categories", data);
     }
     setName("");
+    setParentCategory('')
+    setProperties([])
     fetchCategories();
   }
   function editCategory(category) {
     setEditedCategory(category);
     setName(category.name);
     setParentCategory(category.parent?._id);
+    setProperties(category.properties.map(({name, values}) => ({
+      name,
+      values: values.join(",")
+    })))
   }
   function deleteCategory(category) {
     swal
@@ -140,7 +147,7 @@ function Categories({ swal }) {
                   onChange={(e) =>
                     handlePropertyNameChange(index, property, e.target.value)
                   }
-                  value={properties.name}
+                  value={property.name}
                   placeholder="Property Name"
                 />
                 <input
@@ -148,7 +155,7 @@ function Categories({ swal }) {
                   onChange={(e) =>
                     handlePropertyValuesChange(index, property, e.target.value)
                   }
-                  value={properties.values}
+                  value={property.values}
                   placeholder="Values"
                 />
                 <button
@@ -169,6 +176,7 @@ function Categories({ swal }) {
                 setEditedCategory(null);
                 setName("");
                 setParentCategory("");
+                setProperties([])
               }}
               className="btn-default !py-1 !text-base"
             >

@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 const { model, Schema, models, default: mongoose, Mongoose } = require("mongoose");
 
 const ProductSchema = new Schema({
@@ -6,6 +8,7 @@ const ProductSchema = new Schema({
     price: {type: Number, required: true},
     images: [{type: String}],
     category: {type: mongoose.Types.ObjectId, ref: 'Category'},
+    properties: {type: Object}
 });
 
 export const Product = models.Product || model('Product', ProductSchema)

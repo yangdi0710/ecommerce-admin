@@ -12,10 +12,12 @@ export default function ProductForm({
   price: existingPrice,
   images: existingImages,
   category: assignedCategory,
+  properties: assignedProperties,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
   const [category, setCategory] = useState(assignedCategory || "");
+  const [productProperties, setProductProperties] = useState(assignedProperties || {});
   const [images, setImages] = useState(existingImages || []);
   const [price, setPrice] = useState(existingPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
@@ -29,7 +31,14 @@ export default function ProductForm({
   }, []);
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { title, description, price, images, category };
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties: productProperties,
+    };
     if (_id) {
       // Update
       await axios.put("/api/products", { ...data, _id });
@@ -63,6 +72,27 @@ export default function ProductForm({
     setImages(images);
   }
 
+  const propertiesToFill = [];
+  if (categories.length > 0 && category) {
+    let cateInf = categories.find(({ _id }) => _id === category);
+    propertiesToFill.push(...cateInf.properties);
+    while (cateInf?.parent?._id) {
+      const parentCat = categories.find(
+        ({ _id }) => _id === cateInf?.parent?._id
+      );
+      propertiesToFill.push(...parentCat.properties);
+      cateInf = parentCat;
+    }
+  }
+
+  function setProductProp(propName, value) {
+    setProductProperties((prev) => {
+      const newProductProps = {...prev}
+      newProductProps[propName] = value;
+      return newProductProps;
+    });
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <div className="flex flex-col">
@@ -84,7 +114,22 @@ export default function ProductForm({
               </option>
             ))}
         </select>
-
+        {propertiesToFill.length > 0 &&
+          propertiesToFill.map((p, index) => (
+            <div className="flex flex-col gap-1" key={index}>
+              <div>{p.name}</div>
+              <select
+                value={productProperties[p.name]}
+                onChange={(e) => setProductProp(p.name, e.target.value)}
+              >
+                {p.values.map((v) => (
+                  <option value={v} key="">
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
         <label>Photos</label>
         <div className="mb-2 flex flex-wrap gap-3">
           <ReactSortable
