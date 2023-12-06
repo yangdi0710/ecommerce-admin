@@ -8,6 +8,10 @@ export default function Nav() {
   const router = useRouter();
   const { pathname } = router;
 
+  async function loggout(){
+    await router.push('/');
+    await signOut('google');
+  }
   return (
     <aside className="text-white p-4 pr-0">
       <Link className="flex gap-1 mb-4 mr-4" href="/">
@@ -135,7 +139,7 @@ export default function Nav() {
           </svg>
           Settings
         </Link>
-        <button onClick={() => signOut('google')} className={inactiveLink}>
+        <button onClick={() => loggout()} className={inactiveLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
