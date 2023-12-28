@@ -35,7 +35,8 @@ table.basic {
   @apply w-full mt-8;
 }
 
-table.basic thead tr td {
+table.basic thead tr td,
+table.basic thead tr th {
   @apply bg-gray-100 border-b border-gray-600 uppercase font-medium;
 }
 
